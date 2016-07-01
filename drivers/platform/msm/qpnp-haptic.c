@@ -1350,8 +1350,6 @@ static ssize_t qpnp_hap_vmax_mv_store(struct device *dev,
 
 	if (sscanf(buf, "%d", &data) != 1)
 		return -EINVAL;
-
-
 	if (data < hap->vtg_min) {
 		pr_err("%s: mv %d not in range (%d - %d), using min.", __func__, data,
 				hap->vtg_min, hap->vtg_max);
@@ -1360,13 +1358,6 @@ static ssize_t qpnp_hap_vmax_mv_store(struct device *dev,
 		pr_err("%s: mv %d not in range (%d - %d), using max.", __func__, data,
 				hap->vtg_min, hap->vtg_max);
 		data = hap->vtg_max;
-
-	if (data < QPNP_HAP_VMAX_MIN_MV) {
-		pr_err("%s: mv %d not in range (%d - %d), using min.", __func__, data, QPNP_HAP_VMAX_MIN_MV, QPNP_HAP_VMAX_MAX_MV);
-		data = QPNP_HAP_VMAX_MIN_MV;
-	} else if (data > QPNP_HAP_VMAX_MAX_MV) {
-		pr_err("%s: mv %d not in range (%d - %d), using max.", __func__, data, QPNP_HAP_VMAX_MIN_MV, QPNP_HAP_VMAX_MAX_MV);
-		data = QPNP_HAP_VMAX_MAX_MV;
 
 	}
 
