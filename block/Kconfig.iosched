@@ -47,6 +47,9 @@ config IOSCHED_ROW
 	  manner when the dispatch quantum for each queue is calculated
 	  according to queue priority.
 	  Most suitable for mobile devices.
+config IOSCHED_MAPLE
+	tristate "Maple I/O scheduler"
+	default y
 
 config IOSCHED_ZEN
 	tristate "Zen I/O scheduler"
@@ -158,6 +161,20 @@ choice
 	config DEFAULT_DEADLINE
 		bool "Deadline" if IOSCHED_DEADLINE=y
 
+	config DEFAULT_ROW
+		bool "ROW" if IOSCHED_ROW=y
+		help
+		  The ROW I/O scheduler gives priority to READ requests
+		  over the WRITE requests when dispatching, without starving
+		  WRITE requests. Requests are kept in priority queues.
+		  Dispatching is done in a RR manner when the dispatch quantum
+		  for each queue is defined according to queue priority.
+		  Most suitable for mobile devices.
+
+	config DEFAULT_MAPLE
+		bool "Maple" if IOSCHED_MAPLE=y
+
+
 	config DEFAULT_CFQ
 		bool "CFQ" if IOSCHED_CFQ=y
 
@@ -222,6 +239,8 @@ endchoice
 config DEFAULT_IOSCHED
 	string
 	default "deadline" if DEFAULT_DEADLINE
+	default "row" if DEFAULT_ROW
+	default "maple" if DEFAULT_MAPLE
 	default "cfq" if DEFAULT_CFQ
 	default "noop" if DEFAULT_NOOP
 	default "zen" if DEFAULT_ZEN
