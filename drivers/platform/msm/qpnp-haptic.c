@@ -319,6 +319,8 @@ struct qpnp_hap {
 	struct mutex lock;
 	struct mutex wf_lock;
 	struct mutex set_lock;
+	spinlock_t td_lock;
+	struct work_struct td_work;
 	struct completion completion;
 	enum qpnp_hap_mode play_mode;
 	enum qpnp_hap_auto_res_mode auto_res_mode;
@@ -2568,6 +2570,7 @@ static int qpnp_haptic_probe(struct spmi_device *spmi)
 	mutex_init(&hap->lock);
 	mutex_init(&hap->wf_lock);
 	mutex_init(&hap->set_lock);
+	spin_lock_init(&hap->td_lock);
 
 
 	INIT_WORK(&hap->work, qpnp_hap_worker);
