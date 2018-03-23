@@ -460,18 +460,22 @@ module_param_named(
 );
 
 
+
 #ifdef CONFIG_FORCE_FAST_CHARGE
 static int smbchg_default_hvdcp_icl_ma = 2000; //Maximum charging current at HVDCP (9VDC HW Support Power Supply)
 #else
 static int smbchg_default_hvdcp_icl_ma = 2000;
 #endif
+
 module_param_named(
 	default_hvdcp_icl_ma, smbchg_default_hvdcp_icl_ma,
 	int, S_IRUSR | S_IWUSR
 );
 
 
+
 static int smbchg_default_hvdcp3_icl_ma = 3000; //Special curent for High Power Buck Mode at 6VDC Supply)
+
 module_param_named(
 	default_hvdcp3_icl_ma, smbchg_default_hvdcp3_icl_ma,
 	int, S_IRUSR | S_IWUSR
@@ -4532,6 +4536,16 @@ static int smbchg_change_usb_supply_type(struct smbchg_chip *chip,
 	if (type != POWER_SUPPLY_TYPE_UNKNOWN)
 		chip->usb_supply_type = type;
 
+
+	/*
+	 * Type-C only supports STD(900), MEDIUM(1500) and HIGH(3000) current
+	 * modes, skip all BC 1.2 current if external typec is supported.
+	 * Note: for SDP supporting current based on USB notifications.
+	 */
+
+
+
+
 	if (chip->typec_psy && (type != POWER_SUPPLY_TYPE_USB))
 		current_limit_ma = chip->typec_current_ma;
 	else if (type == POWER_SUPPLY_TYPE_USB)
@@ -7470,8 +7484,10 @@ err:
 	return rc;
 }
 
+
 #define DEFAULT_VLED_MAX_UV		3500000
 #define DEFAULT_FCC_MA			2500 //Set default maximum current, can be set up to 3000mA)
+
 static int smb_parse_dt(struct smbchg_chip *chip)
 {
 	int rc = 0, ocp_thresh = -EINVAL;
@@ -8395,6 +8411,7 @@ static int smbchg_probe(struct spmi_device *spmi)
 	mutex_init(&chip->wipower_config);
 	mutex_init(&chip->usb_status_lock);
 	device_init_wakeup(chip->dev, true);
+
 
 	rc = smbchg_parse_peripherals(chip);
 	if (rc) {
