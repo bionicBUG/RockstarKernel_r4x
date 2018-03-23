@@ -3760,6 +3760,7 @@ static void check_battery_type(struct smbchg_chip *chip)
 	}
 }
 
+
 static void smbchg_external_power_changed(struct power_supply *psy)
 {
 	struct smbchg_chip *chip = container_of(psy,
@@ -3818,7 +3819,12 @@ skip_current_for_non_sdp:
 
 	power_supply_changed(&chip->batt_psy);
 }
-#define call_current_max 900
+
+
+#define call_current_max 2000
+
+
+
 void smbchg_set_calling_current(struct smbchg_chip *chip)
 {
 	enum power_supply_type usb_supply_type;
@@ -3828,7 +3834,7 @@ void smbchg_set_calling_current(struct smbchg_chip *chip)
 	pr_smb(PR_MISC, "chip->call_state =%d, usb_supply_type =%d\n", chip->call_state, usb_supply_type);
 	if ((chip->call_state == 0)) {
 		if (usb_supply_type == POWER_SUPPLY_TYPE_USB_DCP)  {
-			pr_smb(PR_MISC, "call_icl_voltage vote 900mA when calling\n");
+			pr_smb(PR_MISC, "call_icl_voltage vote 2000mA when calling\n");
 			vote(chip->usb_icl_votable, CALL_ICL_VOTER, true, call_current_max);
 		}
 	} else {
