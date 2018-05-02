@@ -4,6 +4,10 @@
 ## AnyKernel setup
 # begin properties
 properties() { '
+
+kernel.string=Rockstar Kernel by @Dhruv007
+
+
 do.devicecheck=1
 do.modules=1
 do.cleanup=1
