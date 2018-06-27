@@ -91,8 +91,12 @@ static void update_cpu_features(struct cpuinfo_arm64 *info)
 
 static int check_reg_mask(char *name, u64 mask, u64 boot, u64 cur, int cpu)
 {
+
 	if ((boot & mask) == (cur & mask))
 		return 0;
+
+	unsigned int cpu = raw_smp_processor_id();
+	u32 l1ip = CTR_L1IP(info->reg_ctr);
 
 	pr_warn("SANITY CHECK: Unexpected variation in %s. Boot CPU: %#016lx, CPU%d: %#016lx\n",
 		name, (unsigned long)boot, cpu, (unsigned long)cur);
@@ -223,7 +227,11 @@ void cpuinfo_store_cpu(void)
 {
 	struct cpuinfo_arm64 *info = this_cpu_ptr(&cpu_data);
 	__cpuinfo_store_cpu(info);
+
 	cpuinfo_sanity_check(info);
+
+	update_cpu_features(raw_smp_processor_id(), info, &boot_cpu_data);
+
 }
 
 void __init cpuinfo_store_boot_cpu(void)
