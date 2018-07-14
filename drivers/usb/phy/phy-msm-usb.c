@@ -77,6 +77,16 @@
 #define PM_QOS_SAMPLE_SEC	2
 #define PM_QOS_THRESHOLD	400
 
+
+#define MICRO_5V 5000000
+#define MICRO_9V 9000000
+
+#define SDP_CURRENT_UA 500000
+#define CDP_CURRENT_UA 2500000
+#define DCP_CURRENT_UA 2500000
+#define HVDCP_CURRENT_UA 2000000
+
+
 enum msm_otg_phy_reg_mode {
 	USB_PHY_REG_OFF,
 	USB_PHY_REG_ON,

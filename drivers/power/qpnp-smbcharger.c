@@ -440,36 +440,44 @@ module_param_named(
 	debug_mask, smbchg_debug_mask, int, S_IRUSR | S_IWUSR
 );
 
-static int smbchg_parallel_en = 1;
+
+static int smbchg_parallel_en = 1; //Enable Parallel Charging (share power to system while charging)
+
 module_param_named(
 	parallel_en, smbchg_parallel_en, int, S_IRUSR | S_IWUSR
 );
 
-static int smbchg_main_chg_fcc_percent = 50;
+static int smbchg_main_chg_fcc_percent = 70;
 module_param_named(
 	main_chg_fcc_percent, smbchg_main_chg_fcc_percent,
 	int, S_IRUSR | S_IWUSR
 );
 
-static int smbchg_main_chg_icl_percent = 60;
+static int smbchg_main_chg_icl_percent = 80;
 module_param_named(
 	main_chg_icl_percent, smbchg_main_chg_icl_percent,
 	int, S_IRUSR | S_IWUSR
 );
 
+
+#ifdef CONFIG_FORCE_FAST_CHARGE
+static int smbchg_default_hvdcp_icl_ma = 2000; //Maximum charging current at HVDCP (9VDC HW Support Power Supply)
+#else
 static int smbchg_default_hvdcp_icl_ma = 2000;
+#endif
 module_param_named(
 	default_hvdcp_icl_ma, smbchg_default_hvdcp_icl_ma,
 	int, S_IRUSR | S_IWUSR
 );
 
-static int smbchg_default_hvdcp3_icl_ma = 3000;
+
+static int smbchg_default_hvdcp3_icl_ma = 3000; //Special curent for High Power Buck Mode at 6VDC Supply)
 module_param_named(
 	default_hvdcp3_icl_ma, smbchg_default_hvdcp3_icl_ma,
 	int, S_IRUSR | S_IWUSR
 );
 
-static int smbchg_default_dcp_icl_ma = 2000;
+static int smbchg_default_dcp_icl_ma = 2200; //Maximum charging current at 5VDC Supply
 module_param_named(
 	default_dcp_icl_ma, smbchg_default_dcp_icl_ma,
 	int, S_IRUSR | S_IWUSR
@@ -4514,7 +4522,7 @@ static int smbchg_set_optimal_charging_mode(struct smbchg_chip *chip, int type)
 }
 
 #define DEFAULT_SDP_MA		100
-#define DEFAULT_CDP_MA		1500
+#define DEFAULT_CDP_MA		2200 //CDP is CDP.
 static int smbchg_change_usb_supply_type(struct smbchg_chip *chip,
 						enum power_supply_type type)
 {
@@ -7348,7 +7356,7 @@ static struct of_device_id smbchg_match_table[] = {
 };
 
 #define DC_MA_MIN 300
-#define DC_MA_MAX 2000
+#define DC_MA_MAX 2500
 #define OF_PROP_READ(chip, prop, dt_property, retval, optional)		\
 do {									\
 	if (retval)							\
@@ -7463,7 +7471,7 @@ err:
 }
 
 #define DEFAULT_VLED_MAX_UV		3500000
-#define DEFAULT_FCC_MA			2000
+#define DEFAULT_FCC_MA			2500 //Set default maximum current, can be set up to 3000mA)
 static int smb_parse_dt(struct smbchg_chip *chip)
 {
 	int rc = 0, ocp_thresh = -EINVAL;
