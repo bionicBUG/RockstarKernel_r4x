@@ -7493,7 +7493,9 @@ static int smb_parse_dt(struct smbchg_chip *chip)
 			"fastchg-current-ma", rc, 1);
 
 	if (chip->cfg_fastchg_current_ma == -EINVAL) {
+
 		chip->cfg_fastchg_current_ma = DEFAULT_FCC_MA;
+
 		pr_err("chip->cfg_fastchg_current_ma = %d\n", chip->cfg_fastchg_current_ma);
 	}
 
