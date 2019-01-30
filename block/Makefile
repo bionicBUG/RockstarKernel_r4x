@@ -23,12 +23,8 @@ obj-$(CONFIG_IOSCHED_ZEN)       += zen-iosched.o
 obj-$(CONFIG_IOSCHED_FIOPS)     += fiops-iosched.o
 obj-$(CONFIG_IOSCHED_SIO)       += sio-iosched.o
 obj-$(CONFIG_IOSCHED_ROW)	+= row-iosched.o
-
-
-
 obj-$(CONFIG_IOSCHED_MAPLE)     += maple-iosched.o
 obj-$(CONFIG_IOSCHED_ZEN)       += zen-iosched.O
-
 obj-$(CONFIG_IOSCHED_FIOPS)     += fiops-iosched.o
 obj-$(CONFIG_IOSCHED_SIO)       += sio-iosched.o
 obj-$(CONFIG_IOSCHED_ZEN)       += zen-iosched.o
