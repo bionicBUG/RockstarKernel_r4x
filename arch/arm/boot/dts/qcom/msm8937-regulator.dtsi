@@ -369,7 +369,9 @@
 
 
 		qcom,cpr-voltage-ceiling = <1125000 1225000 1345000>; //RAM was undervolted at max clock in -5mV
-		qcom,cpr-voltage-floor =   <1045000 1190000 1275000>; //overvolt higher clock rates (+25mV). Stock one was undervolted (-60mV).
+
+		qcom,cpr-voltage-floor =   <1045000 1190000 1300000>; //overvolt higher clock rates (+50mV). Stock one was undervolted (-60mV).
+
 
 
 		vdd-apc-supply = <&pm8937_s5>;
