@@ -62,6 +62,7 @@ fi
 mkdir -p ${KERNELDIR}/aroma
 mkdir -p ${KERNELDIR}/files
  
+export BUILD_CROSS_COMPILE="$HOME/TC/aarch64-linux-gnu-8.x/bin/aarch64-linux-gnu-"
 export SRCDIR="${KERNELDIR}";
 export OUTDIR="${KERNELDIR}/out";
 export ANYKERNEL="${KERNELDIR}/AnyKernel2";
@@ -152,6 +153,12 @@ if [ -n "$USE_CLANG" ]
 then
  export KCFLAGS="-mllvm -polly -mllvm -polly-run-dce -mllvm -polly-run-inliner -mllvm -polly-opt-fusion=max -mllvm -polly-ast-use-context -mllvm -polly-vectorizer=stripmine -mllvm -polly-detect-keep-going -Wasm-operand-widths -Werror=duplicate-decl-specifier -Werror=stringop-overflow= -Werror=misleading-indentation  -Wsometimes-uninitialized"
 
+make -j$BUILD_JOB_NUMBER ARCH=$ARCH \
+			CROSS_COMPILE=$BUILD_CROSS_COMPILE \
+			$KERNEL_DEFCONFIG | grep :
+
+	echo "compiling..."
+	
 	LD_LIBRARY_PATH="$CLANG_LD_PATH:$LD_LIBARY_PATH" \
 	make -j$BUILD_JOB_NUMBER ARCH=$ARCH \
 			CROSS_COMPILE="$BUILD_CROSS_COMPILE" \
