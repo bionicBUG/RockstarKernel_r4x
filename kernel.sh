@@ -81,9 +81,8 @@ if [[ "$*" == *"-clang"* ]]
 then
   USE_CLANG=1
   export CC=$HOME/TC/clang/bin/clang
-  export CLANG_VERSION=$($CC --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
   export CLANG_TRIPLE=aarch64-linux-gnu-
-  export CLANG_LD_PATH=$HOME/TC/clang/lib
+  export CLANG_LD_PATH=$HOME/TC/clang/lib64
   export LLVM_DIS=$HOME/TC/clang/bin/llvm-dis
 fi
  
