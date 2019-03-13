@@ -464,7 +464,10 @@ static void fb_resume_work(struct work_struct *work)
 	    lut_data->val_scron || lut_data->cont_scron)
 		mdss_mdp_kcal_update_pa(lut_data);
 
+
 	mdss_mdp_kcal_display_commit();
+	mdss_mdp_kcal_update_pcc(lut_cpy);
+
 }
 
 static int fb_notifier_callback(struct notifier_block *nb,
