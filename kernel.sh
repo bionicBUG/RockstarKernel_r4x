@@ -8,7 +8,7 @@ export TZ="Asia/Kolkata";
 # Kernel compiling script
 mkdir -p $HOME/TC
 git clone git://github.com/RaphielGang/aarch64-linux-gnu-8.x $HOME/TC/aarch64-linux-gnu-8.x --depth=1
-git clone git://github.com/VRanger/dragontc $HOME/TC/clang --depth=1
+wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/master/clang-r346389b.tar.gz && tar -xvf clang-r346389b.tar.gz
  
  
 function check_toolchain() {
@@ -47,6 +47,8 @@ function transfer() {
     url="$(curl -# -T $1 https://transfer.sh)";
     printf '\n';
     echo -e "Download ${zipname} at ${url}";
+    curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="$url" -d chat_id=$CHAT_ID
+    curl -F chat_id="$CHAT_ID" -F document=@"${ZIP_DIR}/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 }
  
 if [[ -z ${KERNELDIR} ]]; then
@@ -61,7 +63,8 @@ fi
  
 mkdir -p ${KERNELDIR}/aroma
 mkdir -p ${KERNELDIR}/files
- 
+
+export KERNELNAME="RockstarKernel" 
 export BUILD_CROSS_COMPILE="$HOME/TC/aarch64-linux-gnu-8.x/bin/aarch64-linux-gnu-"
 export SRCDIR="${KERNELDIR}";
 export OUTDIR="${KERNELDIR}/out";
@@ -152,6 +155,8 @@ echo -e "Using ${JOBS} threads to compile"
 if [ -n "$USE_CLANG" ]
 then
  export KCFLAGS="-mllvm -polly -mllvm -polly-run-dce -mllvm -polly-run-inliner -mllvm -polly-opt-fusion=max -mllvm -polly-ast-use-context -mllvm -polly-vectorizer=stripmine -mllvm -polly-detect-keep-going -Wasm-operand-widths -Werror=duplicate-decl-specifier -Werror=stringop-overflow= -Werror=misleading-indentation  -Wsometimes-uninitialized"
+make clean
+sudo apt-install bc
 
 make -j$BUILD_JOB_NUMBER ARCH=$ARCH \
 			CROSS_COMPILE=$BUILD_CROSS_COMPILE \
@@ -159,12 +164,14 @@ make -j$BUILD_JOB_NUMBER ARCH=$ARCH \
 
 	echo "compiling..."
 	
-	LD_LIBRARY_PATH="$CLANG_LD_PATH:$LD_LIBARY_PATH" \
-	make -j$BUILD_JOB_NUMBER ARCH=$ARCH \
-			CROSS_COMPILE="$BUILD_CROSS_COMPILE" \
-			CC="ccache $CC" CLANG_TRIPLE="$CLANG_TRIPLE" \
-			KBUILD_COMPILER_STRING="$CLANG_VERSION" \
-			LLVM_DIS="$LLVM_DIS" \ KCFLAGS="$KCFLAGS" | tee build-log.txt ;
+	export KBUILD_COMPILER_STRING=$($HOME/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/ */ /g' -e 's/[[:space:]]*$//') && make O=out ARCH=arm64 santoni_defconfig 
+make -j$(nproc --all) O=out \ 
+	              ARCH=arm64\
+	              CC="$HOME/bin/clang" \ 
+	              CLANG_TRIPLE=aarch64-linux-gnu- \ 
+	              CROSS_COMPILE="$HOME/TC/aarch64-linux-gnu-8.x/bin/aarch64-linux-gnu-"\ 
+	              KCFLAGS="$KCFLAGS" | tee build-log.txt ;
+
 else
   ${MAKE} -j${JOBS} 2>&1 | tee build-log.txt ;
 fi
@@ -212,7 +219,7 @@ time="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 
 #curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="$(git log --pretty=format:'%h : %s' -5)" -d chat_id=$CHAT_ID
 
-curl -F chat_id="-1001344943713-F" document=@"${ZIP_DIR}/$ZIPNAME" -F caption="$message $time" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
+curl -F chat_id="$CHAT_ID" -F document=@"${ZIP_DIR}/$ZIPNAME" -F caption="$message $time" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="
 
