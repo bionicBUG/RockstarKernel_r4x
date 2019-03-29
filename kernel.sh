@@ -180,7 +180,7 @@ make -j$(nproc --all) O=out \
 	              KCFLAGS="$KCFLAGS" | tee build-log.txt ;
 
 else
-  ${MAKE} -j${JOBS}  CC=$CC CLANG_TRIPLE=$CLANG_TRIPLE CROSS_COMPILE=$CROSS_COMPILE; 
+  ${MAKE} -j${JOBS}; 
 fi
  
  
