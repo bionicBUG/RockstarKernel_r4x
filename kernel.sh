@@ -79,6 +79,12 @@ export ZIP_DIR="${HOME}/${KERNELDIR}/files";
 export IMAGE="${OUTDIR}/arch/${ARCH}/boot/Image.gz-dtb";
 export CHAT_ID="-1001344943713";
 export BOT_API_KEY="780524065:AAHoWvNA0Z3TrzNboNX3wUzUvHZpFLyUKb0"
+export CC=$HOME/dragontc/bin/clang
+export CLANG_VERSION=$($CC --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
+export CLANG_TRIPLE=aarch64-linux-gnu-
+export CLANG_LD_PATH=$HOME/dragontc
+export LLVM_DIS=$HOME/clang/bin/llvm-dis
+export CROSS_COMPILE=$HOME/TC/aarch64-linux-gnu-8.x
 #  Clang
 if [[ "$*" == *"-clang"* ]]
 then
@@ -88,6 +94,7 @@ export CLANG_VERSION=$($CC --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' 
 export CLANG_TRIPLE=aarch64-linux-gnu-
 export CLANG_LD_PATH=$HOME/toolchains/dragontc
 export LLVM_DIS=$HOME/clang/bin/llvm-dis
+
 fi
  
 export MAKE_TYPE="Treble"
