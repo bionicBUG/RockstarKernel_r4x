@@ -8,8 +8,7 @@ export TZ="Asia/Kolkata";
 # Kernel compiling script
 mkdir -p $HOME/TC
 git clone git://github.com/RaphielGang/aarch64-linux-gnu-8.x $HOME/TC/aarch64-linux-gnu-8.x --depth=1
-wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/master/clang-r346389b.tar.gz && tar -xvf clang-r346389b.tar.gz
- 
+git clone git://github.com/VRanger/dragontc 
  
 function check_toolchain() {
  
@@ -84,10 +83,11 @@ export BOT_API_KEY="780524065:AAHoWvNA0Z3TrzNboNX3wUzUvHZpFLyUKb0"
 if [[ "$*" == *"-clang"* ]]
 then
   USE_CLANG=1
-  export CC=$HOME/TC/clang/bin/clang
-  export CLANG_TRIPLE=aarch64-linux-gnu-
-  export CLANG_LD_PATH=$HOME/TC/clang/lib64
-  export LLVM_DIS=$HOME/TC/clang/bin/llvm-dis
+export CC=$HOME/toolchains/dragontc/bin/clang
+export CLANG_VERSION=$($CC --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
+export CLANG_TRIPLE=aarch64-linux-gnu-
+export CLANG_LD_PATH=$HOME/toolchains/dragontc
+export LLVM_DIS=$HOME/clang/bin/llvm-dis
 fi
  
 export MAKE_TYPE="Treble"
@@ -173,7 +173,7 @@ make -j$(nproc --all) O=out \
 	              KCFLAGS="$KCFLAGS" | tee build-log.txt ;
 
 else
-  ${MAKE} -j${JOBS} 2>&1 | tee build-log.txt ;
+  ${MAKE} -j${JOBS}  CC=$CC CLANG_TRIPLE=$CLANG_TRIPLE CROSS_COMPILE=$CROSS_COMPILE;  | tee build-log.txt ;
 fi
  
  
