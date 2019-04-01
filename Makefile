@@ -656,6 +656,22 @@ KBUILD_CFLAGS   += $(call cc-disable-warning, memset-transposed-args,)
 
 # Kill all maybe-uninitialized warnings
 KBUILD_CFLAGS	+= $(call cc-disable-warning,maybe-uninitialized,)
+KBUILD_CFLAGS  += $(call cc-disable-warning, misleading-indentation)
+KBUILD_CFLAGS  += $(call cc-disable-warning, memset-elt-size)
+KBUILD_CFLAGS  += $(call cc-disable-warning, parentheses)
+KBUILD_CFLAGS  += $(call cc-disable-warning, bool-compare)
+KBUILD_CFLAGS  += $(call cc-disable-warning, bool-operation)
+KBUILD_CFLAGS += $(call cc-disable-warning, format-truncation)
+KBUILD_CFLAGS += $(call cc-disable-warning, format-overflow)
+KBUILD_CFLAGS += $(call cc-disable-warning, int-in-bool-context)
+KBUILD_CFLAGS += $(call cc-disable-warning, attribute-alias)
+KBUILD_CFLAGS  += $(call cc-disable-warning, duplicate-decl-specifier)
+KBUILD_CFLAGS  += $(call cc-disable-warning, switch-unreachable)
+KBUILD_CFLAGS  += $(call cc-disable-warning, array-bounds)
+KBUILD_CFLAGS  += $(call cc-disable-warning, stringop-overflow)
+
+# Disable maybe-uninitialized warnings
+KBUILD_CFLAGS  += $(call cc-disable-warning,maybe-uninitialized,)
 
 # Disable unused-constant-variable warnings
 KBUILD_CFLAGS   += $(call cc-disable-warning,unused-const-variable,)
