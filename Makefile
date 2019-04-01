@@ -669,6 +669,7 @@ KBUILD_CFLAGS  += $(call cc-disable-warning, duplicate-decl-specifier)
 KBUILD_CFLAGS  += $(call cc-disable-warning, switch-unreachable)
 KBUILD_CFLAGS  += $(call cc-disable-warning, array-bounds)
 KBUILD_CFLAGS  += $(call cc-disable-warning, stringop-overflow)
+KBUILD_CFLAGS  += $(call cc-disable-warning,incompatible-pointer-types) 
 
 # Disable maybe-uninitialized warnings
 KBUILD_CFLAGS  += $(call cc-disable-warning,maybe-uninitialized,)
