@@ -61,6 +61,10 @@
 #include "mdss_mdp.h"
 #include "mdss_dsi.h"
 
+#include "mdss_livedisplay.h"
+#ifdef CONFIG_KLAPSE
+#include "klapse.h"
+#endif 
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
 #define MDSS_FB_NUM 3
 #else
@@ -296,6 +300,9 @@ static void mdss_fb_set_bl_brightness(struct led_classdev *led_cdev,
 #endif
 		mutex_unlock(&mfd->bl_lock);
 	}
+#ifdef CONFIG_KLAPSE
+	set_rgb_slider(bl_lvl);
+#endif
 }
 
 static struct led_classdev backlight_led = {
