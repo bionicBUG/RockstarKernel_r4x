@@ -670,6 +670,7 @@ KBUILD_CFLAGS  += $(call cc-disable-warning, switch-unreachable)
 KBUILD_CFLAGS  += $(call cc-disable-warning, array-bounds)
 KBUILD_CFLAGS  += $(call cc-disable-warning, stringop-overflow)
 KBUILD_CFLAGS  += $(call cc-disable-warning,incompatible-pointer-types) 
+KBUILD_CFLAGS  += $(call cc-disable-warning,-Wunused-function)
 
 # Disable maybe-uninitialized warnings
 KBUILD_CFLAGS  += $(call cc-disable-warning,maybe-uninitialized,)
@@ -696,7 +697,7 @@ KBUILD_CFLAGS   += $(call cc-disable-warning,-Wno-typedef-redefinition)
 KBUILD_CFLAGS   += $(call cc-disable-warning,-Wno-parentheses-equality)
 KBUILD_CFLAGS   += $(call cc-disable-warning,-Wno-non-literal-null-conversion)
 KBUILD_CFLAGS   += $(call cc-disable-warning,-Wno-enum-conversion)
-
+KBUILD_CFLAGS   += $(call cc-disable-warning,-Wunused-function)
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
