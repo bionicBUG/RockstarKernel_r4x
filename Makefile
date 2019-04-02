@@ -670,7 +670,7 @@ KBUILD_CFLAGS  += $(call cc-disable-warning, switch-unreachable)
 KBUILD_CFLAGS  += $(call cc-disable-warning, array-bounds)
 KBUILD_CFLAGS  += $(call cc-disable-warning, stringop-overflow)
 KBUILD_CFLAGS  += $(call cc-disable-warning,incompatible-pointer-types) 
-KBUILD_CFLAGS  += $(call cc-disable-warning,-Wunused-function)
+KBUILD_CFLAGS  += $(call cc-disable-warning,unused-function)
 
 # Disable maybe-uninitialized warnings
 KBUILD_CFLAGS  += $(call cc-disable-warning,maybe-uninitialized,)
