@@ -59,9 +59,7 @@
 #include "mdss_debug.h"
 #include "mdss_smmu.h"
 #include "mdss_mdp.h"
-#include "mdss_dsi.h"
-
-#include "mdss_livedisplay.h"
+#include "mdp3_ctrl.h"
 #ifdef CONFIG_KLAPSE
 #include "klapse.h"
 #endif 
