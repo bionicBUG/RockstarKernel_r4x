@@ -1,4 +1,5 @@
 ifeq ($(CONFIG_ARCH_MSM8940_XIAOMI_SANTONI),y)
+ifeq ($(CONFIG_ARCH_MSM8940_XIAOMI_SANTONI_TREBLE),y)
 dtb-y += msm8940-pmi8950-qrd-sku7_S88536AA2-treble.dtb
 else
 dtb-y += msm8940-pmi8950-qrd-sku7_S88536AA2.dtb
