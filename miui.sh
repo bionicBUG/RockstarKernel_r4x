@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+export KERNELDIR="$HOME/3"
 export TZ="Asia/Kolkata";
 
 # Kernel compiling script
@@ -38,7 +38,9 @@ fi
 
 mkdir -p ${KERNELDIR}/aroma
 mkdir -p ${KERNELDIR}/files
-
+export KERNELNAME="RockstarKernel"
+export BOT_API_KEY="780524065:AAHoWvNA0Z3TrzNboNX3wUzUvHZpFLyUKb0"
+export CHAT_ID="-1001344943713"
 export SRCDIR="${KERNELDIR}";
 export OUTDIR="${KERNELDIR}/out";
 export ANYKERNEL="${KERNELDIR}/AnyKernel2/";
@@ -46,8 +48,8 @@ export AROMA="${KERNELDIR}/aroma/";
 export ARCH="arm64";
 export SUBARCH="arm64";
 export KBUILD_BUILD_USER="Dhruv007"
-export KBUILD_BUILD_HOST="Rockstars"
-export TOOLCHAIN="${HOME}/gcc-linaro-5.5.0-2017.10-x86_64_aarch64-linux-gnu/";
+export KBUILD_BUILD_HOST="TeamQuantum"
+export TOOLCHAIN="$HOME/TC/aarch64-linux-gnu-8.x";
 export DEFCONFIG="santoni_defconfig";
 export ZIP_DIR="${HOME}/${KERNELDIR}/files/";
 export IMAGE="${OUTDIR}/arch/${ARCH}/boot/Image.gz-dtb";
