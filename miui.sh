@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export KERNELDIR="$HOME/3"
+export KERNELDIR="$HOME/2"
 export TZ="Asia/Kolkata";
 
 # Kernel compiling script
@@ -49,7 +49,7 @@ export ARCH="arm64";
 export SUBARCH="arm64";
 export KBUILD_BUILD_USER="Dhruv007"
 export KBUILD_BUILD_HOST="TeamQuantum"
-export TOOLCHAIN="$HOME/TC/aarch64-linux-gnu-8.x";
+export TOOLCHAIN="${HOME}/gcc-linaro-5.5.0-2017.10-x86_64_aarch64-linux-gnu/";
 export DEFCONFIG="santoni_defconfig";
 export ZIP_DIR="${HOME}/${KERNELDIR}/files/";
 export IMAGE="${OUTDIR}/arch/${ARCH}/boot/Image.gz-dtb";
