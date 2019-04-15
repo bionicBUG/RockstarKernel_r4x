@@ -698,7 +698,8 @@ KBUILD_CFLAGS   += $(call cc-disable-warning,-Wno-parentheses-equality)
 KBUILD_CFLAGS   += $(call cc-disable-warning,-Wno-non-literal-null-conversion)
 KBUILD_CFLAGS   += $(call cc-disable-warning,-Wno-enum-conversion)
 KBUILD_CFLAGS   += $(call cc-disable-warning,-Wunused-function)
-
+KBUILD_CFLAGS   += $(call cc-disable-warning,-Wunused-variable)
+KBUILD_CFLAGS   += $(call cc-disable-warning,implicit-function-declaration)
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else
