@@ -2453,9 +2453,6 @@ recheck:
 
 	schedule_delayed_work(&chip->parallel_en_work, 0);
 
-	chip->parallel.parallel_en_in_progress = false;
-	queue_delayed_work(system_power_efficient_wq,
-		&chip->parallel_en_work, 0);
 
 }
 
