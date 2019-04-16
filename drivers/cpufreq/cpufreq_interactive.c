@@ -419,13 +419,13 @@ static u64 update_load(int cpu)
 		ppol->policy->governor_data;
 	u64 now;
 	u64 now_idle;
-	unsigned int delta_idle;
-	unsigned int delta_time;
+	u64 delta_idle;
+	u64 delta_time;
 	u64 active_time;
 
 	now_idle = get_cpu_idle_time(cpu, &now, tunables->io_is_busy);
-	delta_idle = (unsigned int)(now_idle - pcpu->time_in_idle);
-	delta_time = (unsigned int)(now - pcpu->time_in_idle_timestamp);
+	delta_idle = (now_idle - pcpu->time_in_idle);
+	delta_time = (now - pcpu->time_in_idle_timestamp);
 
 	if (delta_time <= delta_idle)
 		active_time = 0;
@@ -465,7 +465,7 @@ static void cpufreq_interactive_timer(unsigned long data)
 		ppol->policy->governor_data;
 	struct sched_load *sl = ppol->sl;
 	struct cpufreq_interactive_cpuinfo *pcpu;
-	unsigned int new_freq;
+	unsigned int new_freq = 0;
 	unsigned int prev_laf = 0, t_prevlaf;
 	unsigned int pred_laf = 0, t_predlaf = 0;
 	unsigned int prev_chfreq, pred_chfreq, chosen_freq;
@@ -662,14 +662,6 @@ static void cpufreq_interactive_timer(unsigned long data)
 					 ppol->policy->cur, new_freq);
 
 	ppol->target_freq = new_freq;
-
-	if ((ppol->target_freq != ppol->policy->cur)
-		&& (ppol->target_freq > ppol->policy->max)) {
-		ktrace_add_cpufreq_event(KTRACE_CPUFREQ_TYPE_MITIGATION,
-				current->pid, ktime_to_ns(ktime_get()), max_cpu,
-				ppol->target_freq, ppol->policy->max);
-	}
-
 	spin_unlock_irqrestore(&ppol->target_freq_lock, flags);
 	spin_lock_irqsave(&speedchange_cpumask_lock, flags);
 	cpumask_set_cpu(max_cpu, &speedchange_cpumask);
@@ -819,8 +811,8 @@ static int load_change_callback(struct notifier_block *nb, unsigned long val,
 	spin_unlock_irqrestore(&ppol->target_freq_lock, flags);
 
 	if (!hrtimer_is_queued(&ppol->notif_timer))
-		hrtimer_start(&ppol->notif_timer, ms_to_ktime(1),
-			      HRTIMER_MODE_REL);
+		__hrtimer_start_range_ns(&ppol->notif_timer, ms_to_ktime(1),
+					0, HRTIMER_MODE_REL, 0);
 exit:
 	up_read(&ppol->enable_sem);
 	return 0;
@@ -1802,12 +1794,6 @@ static int cpufreq_governor_interactive(struct cpufreq_policy *policy,
 	case CPUFREQ_GOV_LIMITS:
 		ppol = per_cpu(polinfo, policy->cpu);
 
-		if (policy->max < policy->cpuinfo.max_freq) {
-			ktrace_cpufreq_set_mitigated(current->comm, policy->cpu, policy->related_cpus, policy->max);
-		} else {
-			ktrace_cpufreq_set_mitigated(current->comm, policy->cpu, policy->related_cpus, 0);
-		}
-
 		__cpufreq_driver_target(policy,
 				ppol->target_freq, CPUFREQ_RELATION_L);
 
@@ -1838,6 +1824,7 @@ struct cpufreq_governor cpufreq_gov_interactive = {
 static int __init cpufreq_interactive_init(void)
 {
 	struct sched_param param = { .sched_priority = MAX_RT_PRIO-1 };
+	int ret = 0;
 
 	spin_lock_init(&speedchange_cpumask_lock);
 	mutex_init(&gov_lock);
@@ -1854,7 +1841,12 @@ static int __init cpufreq_interactive_init(void)
 	/* NB: wake up so the thread does not look hung to the freezer */
 	wake_up_process_no_notif(speedchange_task);
 
-	return cpufreq_register_governor(&cpufreq_gov_interactive);
+	ret = cpufreq_register_governor(&cpufreq_gov_interactive);
+	if (ret) {
+		kthread_stop(speedchange_task);
+		put_task_struct(speedchange_task);
+	}
+	return ret;
 }
 
 #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE
