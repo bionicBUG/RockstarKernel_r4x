@@ -83,10 +83,10 @@ export TDTB="${OUTDIR}/arch/arm64/boot/dts/qcom/msm8940-pmi8950-qrd-sku7_S88536A
 
 export CHAT_ID="-1001344943713";
 export BOT_API_KEY="780524065:AAHoWvNA0Z3TrzNboNX3wUzUvHZpFLyUKb0"
-export CC=$HOME/dragontc/bin/clang
+export CC=$HOME/TC/clang/bin/clang
 export CLANG_VERSION=$($CC --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
 export CLANG_TRIPLE=aarch64-linux-gnu-
-export CLANG_LD_PATH=$HOME/dragontc
+export CLANG_LD_PATH=$HOME/TC/clang
 export LLVM_DIS=$HOME/clang/bin/llvm-dis
 export CROSS_COMPILE=$HOME/TC/aarch64-linux-gnu-8.x
 #  Clang
@@ -175,10 +175,10 @@ make -j$BUILD_JOB_NUMBER ARCH=$ARCH \
 
 	echo "compiling..."
 	
-	export KBUILD_COMPILER_STRING=$($HOME/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/ */ /g' -e 's/[[:space:]]*$//') && make O=out ARCH=arm64 santoni_defconfig 
+	export KBUILD_COMPILER_STRING=$($HOME/TC/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/ */ /g' -e 's/[[:space:]]*$//') && make O=out ARCH=arm64 santoni_defconfig 
 make -j$(nproc --all) O=out \ 
 	              ARCH=arm64\
-	              CC="$HOME/bin/clang" \ 
+	              CC="$HOME/TC/clang/bin/clang" \ 
 	              CLANG_TRIPLE=aarch64-linux-gnu- \ 
 	              CROSS_COMPILE="$HOME/TC/aarch64-linux-gnu-8.x/bin/aarch64-linux-gnu-"\ 
 	              KCFLAGS="$KCFLAGS" | tee build-log.txt ;
