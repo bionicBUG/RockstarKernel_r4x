@@ -621,6 +621,7 @@ KBUILD_CFLAGS += $(call cc-option, -mno-global-merge,)
 KBUILD_CFLAGS += $(call cc-option, -fcatch-undefined-behavior)
 KBUILD_CFLAGS += $(call cc-option, -no-integrated-as)
 KBUILD_AFLAGS += $(call cc-option, -no-integrated-as)
+CLANG_FLAGS    += -fno-builtin-bcmp
 else
 
 # These warnings generated too much noise in a regular build.
@@ -656,6 +657,7 @@ KBUILD_CFLAGS += $(call cc-option, -mno-global-merge,)
 KBUILD_CFLAGS += $(call cc-option, -fcatch-undefined-behavior)
 KBUILD_CFLAGS += $(call cc-option, -no-integrated-as)
 KBUILD_AFLAGS += $(call cc-option, -no-integrated-as)
+KBUILD_CFLAGS += $(call cc-option, -fno-builtin-bcmp)
 else
 
 # These warnings generated too much noise in a regular build.
@@ -721,7 +723,7 @@ KBUILD_CFLAGS   += $(call cc-disable-warning,-Wno-non-literal-null-conversion)
 KBUILD_CFLAGS   += $(call cc-disable-warning,-Wno-enum-conversion)
 KBUILD_CFLAGS   += $(call cc-disable-warning,-Wunused-function)
 KBUILD_CFLAGS   += $(call cc-disable-warning,-Wunused-command-line-argument)
-
+KBUILD_CFLAGS   += $(call cc-disable-warning,-Wfortify-source)
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= $(call cc-option,-Oz,-Os) $(call cc-disable-warning,maybe-uninitialized,)
 else
