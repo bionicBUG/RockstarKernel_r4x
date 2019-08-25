@@ -370,7 +370,7 @@
 
 		qcom,cpr-voltage-ceiling = <1125000 1225000 1345000>; //RAM was undervolted at max clock in -5mV
 
-		qcom,cpr-voltage-floor =   <1045000 1190000 1350000>; //overvolt higher clock rates (+100mV). Stock one was undervolted (-60mV).
+		qcom,cpr-voltage-floor =   <1045000 1190000 1275000>; //overvolt higher clock rates (+75mV). Stock one was undervolted (-60mV).
 
 
 		vdd-apc-supply = <&pm8937_s5>;
@@ -407,7 +407,7 @@
 		qcom,cpr-fuse-quot-offset-scale = <5 5 5>;
 		qcom,cpr-init-voltage-step = <10000>;
 
-		qcom,cpr-corner-map = <1 1 2 2 2 3 3 3 3 3>;
+		qcom,cpr-corner-map = <1 1 2 2 3 3>;
 
 		qcom,cpr-corner-frequency-map =
 				<1 960000000>,
@@ -415,11 +415,7 @@
 				<3 1209600000>,
 				<4 1248000000>,
 				<5 1344000000>,
-				<6 1401000000>,
-				<7 1497600000>,
-				<8 1536000000>,
-				<9 1574400000>,
-				<10 1651000000>;
+				<6 1401000000>;
 
 		qcom,speed-bin-fuse-sel = <37 34 3 0>;
 		qcom,cpr-speed-bin-max-corners =
